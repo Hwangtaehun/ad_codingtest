@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1703759956 source:d:\github\ad_codingtest\sjbound\main.cpp
+	<iostream>
+	<cstdio>
+	<algorithm>
+

@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1703761472 source:d:\github\ad_codingtest\sjbo\main.cpp
+	<iostream>
+	<cstdio>
+	<vector>
+
