@@ -74,16 +74,17 @@ void Bfs(){
         cur = q.front();
         q.pop();
         box = cur.box;
-        row = cur.box;
-        col = cur.box;
+        row = cur.row;
+        col = cur.col;
         nb = 0;
         for(int i = 0; i < 6; i++){
             nb = box + di[i].box;
             nr = row + di[i].row;
             nc = col + di[i].col;
-            if(nb < 0 || nb >= h || nr < 0 || nr >= n || nc < 0 || nc >= m || data[nb][nr][nc] != 0)
+            if(nb < 0 || nb >= h || nr < 0 || nr >= n || nc < 0 || nc >= m || data[nb][nr][nc] != 0 ){
                 continue;
-            data[nb][nr][nc] =  data[box][row][col] + 1;
+            }
+            data[nb][nr][nc] = data[box][row][col] + 1;
             q.push((ROWCOL){nb, nr, nc});
         }
         TestPrn(q, cur);
