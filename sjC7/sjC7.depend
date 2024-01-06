@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1704545857 source:d:\github\ad_codingtest\sjc7\main.cpp
+	<cstdio>
+	<vector>
+	<queue>
+
