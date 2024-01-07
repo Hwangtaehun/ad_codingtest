@@ -5,6 +5,7 @@
 using namespace std;
 
 int vertex, edge, cost;
+int vertex_cost[9];//여기에 들어가는 값은 0과 1를 제외 시작은 2 즉 2 = 0, 3 = 1
 bool visited[11];
 std::vector< pair <int, int> > v[60];//data 데이터
 
@@ -24,72 +25,57 @@ void Input(){
 
 void Solve(){
     std:queue <int> q;
+    int pre_cost = 0;
     int currentNode;
-    int node = 1;
 
-    q.push(node);
-    visited[node] = true;
+    q.push(1);
+    visited[1] = true;
 
-    while(currentNode != 7){
+    while(currentNode != vertex){
         currentNode = q.front();
         q.pop();
-        printf("%d ->\n", currentNode);
-        int index = v[currentNode].size();
-        int temp[index][2];
 
-
-        for(int i = 0; i < index; i++){
-            temp[i][0] = v[currentNode][i].first;
-            temp[i][1] = v[currentNode][i].second;
+        if(currentNode != 1){
+            pre_cost = vertex_cost[currentNode-2];
         }
 
-        for(int i = 0; i < index-1; i++){
-            for(int j = i+1; j < index; j++){
-                int value, node;
-                if(temp[j][1] < temp[i][1] ){
-                    node = temp[i][0];
-                    value = temp[i][1];
-                    temp[i][0] = temp[j][0];
-                    temp[i][1] = temp[j][1];
-                    temp[j][0] = node;
-                    temp[j][1] = value;
+        for(int i = 0; i < v[currentNode].size();i++){
+            int pre_value = v[currentNode][i].second + pre_cost;
+            int *temp = &vertex_cost[v[currentNode][i].first - 2];
+            if(*temp ==0 || pre_value < *temp){
+                *temp = pre_value;
+            }
+        }
+
+        int node = 0;
+        int value = 999;
+
+        for(int i = 0; i <= vertex - 2;i++){
+            if(vertex_cost[i] != 0 && !visited[i+2]){
+                if(vertex_cost[i] < value){
+                    node = i + 2;
+                    value = vertex_cost[i];
                 }
             }
         }
 
-        for(int i = 0; i < index; i++){
-            printf("temp[%d][0] = %d, temp[%d][1] = %d\n", i, temp[i][0], i, temp[i][1]);
-        }
-
-        for(int i = 0; i < index; i++){
-            printf("temp[%d][0] =  %d\n", i, temp[i][0]);
-            if(!visited[temp[i][0]]){
-                visited[temp[i][0]] = true;
-                q.push(temp[i][0]);
-                cost += temp[i][1];
-                break;
-            }
-        }
+        visited[node] = true;
+        q.push(node);
     }
 
+    cost = vertex_cost[currentNode-2];
 }
 
 void Output(){
-    printf("vertex =  %d, edge = %d\n", vertex, edge);
-    for(int i = 1; i <= vertex; i++){
-        printf("v[i].size() =  %d\t", v[i].size());
-        printf("node %d : ", i);
-        for(int j = 0; j < v[i].size(); j++){
-            printf("%5d%5d", v[i][j].first, v[i][j].second);
-        }
-        printf("\n");
-    }
+    freopen("output.txt", "w", stdout);
+    printf("%d", cost);
 }
 
 int main()
 {
     Input();
     Solve();
+    Output();
 
     return 0;
 }
