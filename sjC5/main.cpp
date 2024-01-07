@@ -39,7 +39,7 @@ void Fish(){
 void Solve1(){
     int tot, maxTot = 0;
 
-    for(int i = 0; i <= pond_col - net_row; i++){
+    for(int i = 0; i <= pond_col - net_col; i++){
         for(int j = 0; j <= pond_row - net_row; j++){
             tot = 0;
             for(int a = 0; a < net_col; a++){
@@ -52,8 +52,8 @@ void Solve1(){
                 if(tot > maxTot){
                     maxTot = tot;
                 }
-                printf("\n");
             }
+            printf("%d\n", tot);
         }
     }
     printf("%d", maxTot);
@@ -62,7 +62,7 @@ void Solve1(){
 void Solve2(){
     int tot, maxTot = 0;
 
-    for(int i = 0; i <= pond_col - net_row; i++){
+    for(int i = 0; i <= pond_col - net_col; i++){
         for(int j = 0; j <= pond_row - net_row; j++){
             tot = 0;
             for(int a = i; a < i + net_col; a++){
@@ -99,7 +99,7 @@ void Print(){
 int main()
 {
     Input();
-    Print();
+    //Print();
     Solve1();
     printf("\n");
     Solve2();

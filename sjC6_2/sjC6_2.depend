@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1704627041 source:d:\github\ad_codingtest\sjc6_2\main.cpp
+	<iostream>
+	<fstream>
+
