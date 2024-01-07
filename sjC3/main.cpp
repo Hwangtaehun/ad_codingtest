@@ -1,20 +1,53 @@
 #include <cstdio>
 
-int round;
+int n;
 int kind;
 
 void Input(){
     freopen("input.txt", "r", stdin);
-    scanf("%d", &round);
+    scanf("%d", &n);
+}
+
+int Solve(){
+    int cnt = 0;
+
+    for(int a = 1; a <= n; a++){
+        for(int b = a; b <= n; b++){
+            for(int c = b; c <= n; c++){
+                if(a+b+c == n && c < a + b){
+                    printf("%d %d %d\n", a, b, c);
+                    cnt++;
+                }
+            }
+        }
+    }
+
+    return cnt;
+}
+
+int Solve2(){
+    int c, cnt = 0;
+    for(int a = 1; a <= n; a++){
+        for(int b = a; b <= n; b++){
+            c = n - (a + b);
+
+            if(c < a + b && (b <= c)){
+                printf("%d %d %d\n", a, b, c);
+                cnt++;
+            }
+        }
+    }
+
+    return cnt;
 }
 
 void Triangle(){
     int big;
     int middle;
     int small;
-    for(int i = round/3; i < round; i++){
+    for(int i = n/3; i < n; i++){
         big = i;
-        int other = round - i;
+        int other = n - i;
         if(other/2 > 0){
             for(int j =  1; j < other; j++){
                 middle = j;
@@ -39,7 +72,9 @@ void Output(){
 int main()
 {
     Input();
-    Triangle();
-    Output();
+    printf("%d\n", Solve());
+    printf("%d\n", Solve2());
+    //Triangle();
+    //Output();
     return 0;
 }
