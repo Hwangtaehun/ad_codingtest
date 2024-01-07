@@ -56,7 +56,7 @@ int Check(int cnt, int color, int m_col, int m_row, int dir){
     }
 }
 
-void Solve(){
+void Game(){
     color = 0;
 
     for(int i = 0; i < N; i++){
@@ -81,7 +81,7 @@ void Output(){
 int main()
 {
     Input();
-    Solve();
+    Game();
     Output();
     return 0;
 }
