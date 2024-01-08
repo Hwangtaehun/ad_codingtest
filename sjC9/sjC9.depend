@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1704700173 source:d:\github\ad_codingtest\sjc9\main.cpp
+	<cstdio>
+	<cstdlib>
+	<cmath>
+

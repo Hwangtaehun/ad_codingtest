@@ -4,11 +4,12 @@
 #define N 10
 
 int data[100];
-int mx = 11, mn = 0, cnt = 0, in;
+int mx = 11, mn = 0, cnt = 0;
+double in;
 
 void Input(){
     freopen("input.txt", "r", stdin);
-    scanf("%d", &in);
+    scanf("%lf", &in);
 
     if(in < mx && in > mn){
         mx = pow(N, in);
@@ -34,10 +35,24 @@ bool Sosu(int num){
 
 void Find(){
     for(int i = mn; i <= mx; i++){
+        bool ok = false;
+
         if(Sosu(i)){
-            int n = pow(N, in -1);
-            int divid = i / n;
-            if(Sosu(divid)){
+            double gari = in;
+
+            while(gari != 1){
+                gari--;
+                int n = pow(N, gari);
+                int divid = i / n;
+                if(!Sosu(divid)){
+                    ok = false;
+                }
+                else{
+                    ok = true;
+                }
+            }
+
+            if(ok){
                 data[cnt] = i;
                 cnt++;
             }
