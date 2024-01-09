@@ -1,11 +1,32 @@
 #include <cstdio>
 int data[2][100];
 bool visited[100];
-int minum, n, m;
+int minum, n, mc, i, M;
+
+//Ç®ÀÌ
+int m[101], c[101];
+
+int Min(int a, int b){
+    return a < b ? a : b;
+}
+
+int f(int i, int r){
+    if(r <= 0){
+        return 0;
+    }
+    printf("%d,%d \n", i, r);
+
+    if(i == 0){
+        return 99999;
+    }
+    else{
+        return Min(f(i-1,r), f(i-1,r-m[i])+c[i]);
+    }
+}
 
 void Input(){
     freopen("input.txt", "r", stdin);
-    scanf("%d %d", &n, &m);
+    scanf("%d %d", &n, &mc);
     for(int i = 0; i < 2; i++){
         for(int j = 0; j < n; j++){
             scanf("%d", &data[i][j]);
@@ -43,7 +64,7 @@ void Close(){
         }
     }
 
-    while(hap < m){
+    while(hap < mc){
         hap += data[0][cnt];
         minum += data[1][cnt];
         cnt++;
@@ -58,7 +79,21 @@ void Output(){
 
 int main()
 {
-    Input();
-    Close();
-    Output();
+    //Input();
+    //Close();
+    //Output();
+
+    freopen("input.txt", "r", stdin);
+    scanf("%d %d", &n, &M);
+
+    for(i = 1; i <= n; i++){
+        scanf("%d", &m[i]);
+    }
+
+    for(i = 1; i <= n; i++){
+        scanf("%d", &c[i]);
+    }
+
+    printf("%d", f(n,M));
+    return 0;
 }
