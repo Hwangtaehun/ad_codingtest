@@ -1,8 +1,7 @@
 #include <cstdio>
 
-int col, row;
+int col, row, hours;
 int data[100][100];
-bool in_data[100][100];
 
 void Input(){
     freopen("input.txt", "r", stdin);
@@ -14,48 +13,109 @@ void Input(){
     }
 }
 
-void Fill(int x, int y, bool cheese){
-    if(x < 0 || x >= row || y < 0 || y >= col || data[y][x] == 1){
-        return;
-    }
-
-}
-
-void Inside(){
-    for(int i = 0; i < col; i++){
-        for(int j = 0; j < row; j++){
-            in_data[i][j] = data[i][j];
-        }
-    }
-
-    for(int i = 0; i < col; i++){
-        for(int j = 0; j < row; j++){
-            if(in_data[i][j]){
-                if(!in_data[i][j+1]){
-
-                    int y = i, x = j+1;
-                    Fill(j+1, i, 0);
-                }
-            }
-        }
-    }
-}
-
 void Print(){
-    printf("%d %d\n", col, row);
     for(int i = 0; i < col; i++){
         for(int j = 0; j < row; j++){
-            printf("%d ", in_data[i][j]);
+            printf("%d ", data[i][j]);
         }
         printf("\n");
     }
+    printf("\n");
+}
+
+void Air(int x, int y){
+    if(x < 0 || x >= row || y < 0 || y >= col || data[y][x] != 0){
+        return;
+    }
+
+    data[y][x] = 2;
+
+    Air(x+1, y);
+    Air(x-1, y);
+    Air(x, y+1);
+    Air(x, y-1);
+}
+
+bool Checking(int x, int y){
+    int cnt = 0;
+
+    if(data[y][x-1] == 2){
+        cnt++;
+    }
+
+    if(data[y][x+1] == 2){
+        cnt++;
+    }
+
+    if(data[y-1][x] == 2){
+        cnt++;
+    }
+
+    if(data[y+1][x] == 2){
+        cnt++;
+    }
+
+    if(cnt > 1){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool Exist(){
+    for(int i = 0; i < col; i++){
+       for(int j = 0; j < row; j++){
+            if(data[i][j] == 1){
+                return true;
+            }
+       }
+   }
+   return false;
+}
+
+void Melt(){
+    for(int i = 0; i < col; i++){
+       for(int j = 0; j < row; j++){
+            if(data[i][j] == 1){
+                if(Checking(j, i)){
+                    data[i][j] = 3;
+                }
+            }
+       }
+   }
+
+   for(int i = 0; i < col; i++){
+       for(int j = 0; j < row; j++){
+            if(data[i][j] == 3){
+                data[i][j] = 2;
+            }
+       }
+   }
+
+   for(int i = 0; i < col; i++){
+       for(int j = 0; j < row; j++){
+            if(data[i][j] == 0){
+                Air(j, i);
+            }
+       }
+   }
+}
+
+void Ageing(){
+
+   Air(0, 0);
+
+   while(Exist()){
+        Melt();
+        hours++;
+   }
+
+   printf("%d\n", hours);
 }
 
 int main()
 {
     Input();
-    Inside();
-    Print();
-
+    Ageing();
     return 0;
 }
