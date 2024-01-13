@@ -60,7 +60,7 @@ void Sort(){
 }
 
 int Exist(int find_num){
-    int check = 0;
+    int check = 999;
 
     for(int i = 0; i < num; i++){
         if(find_num == hap[i]){
@@ -109,8 +109,28 @@ void Array_Init(int* arr, bool zero){
     }
 }
 
+void Haparr_Zero(){
+    for(int i = 0; i < 7; i++){
+        hap_arr[i] = 0;
+    }
+}
+
+void Hap_Zero(){
+    num = 0;
+    for(int i = 0; i < 126; i++){
+        hap[i] = 0;
+    }
+}
+
+void Print_hap(){
+    for(int i = 0; i < num; i++){
+        printf("hap[%d] = %d\n", i, hap[i]);
+    }
+}
+
 void Balance(){
     int sum, diff, arrsz;
+    sum = 0;
 
     for(int i = 6; i >= 0; i--){
         if(weight >= chu[i]){
@@ -118,6 +138,7 @@ void Balance(){
             break;
         }
     }
+    printf("weight = %d, chu[root] = %d\n", weight, chu[root]);
 
     if(weight == chu[root-1]){
         data[0] = weight;
@@ -150,8 +171,11 @@ void Balance(){
             num--;
             Sort();
 
+            printf("sum = %d, weight = %d\n", sum, weight);
             if(sum > weight){
+                printf("sum > weight run\n");
                 diff = chu[root] - weight;
+
                 if(weight == diff){
                     int i;
                     data[0] = weight;
@@ -164,8 +188,10 @@ void Balance(){
                     data[i+1] = chu[root];
                     sz = i + 2;
                 }else{
+                    printf("weight %d\n", weight);
                     int i = Exist(weight);
-                    if(i != 0){
+                    if(i != 999){
+                        printf("Exist O\n");
                         int arr[root];
                         Array_Init(arr, true);
                         Search(0, 0, weight, arr);
@@ -182,14 +208,59 @@ void Balance(){
                         data[i] = 0;
                         data[i + 1] = chu[root];
                         sz = i + 2;
-                    }else{
-                        //here
+                    }
+                    else{
+                        printf("Exist X\n");
                         int index, temp_diff, bouns[root], base[root];
+
+                        Array_Init(bouns, true);
+                        Array_Init(base, true);
+
+                        for(int i = 1; i < arrsz; i++){
+                            if(diff > hap[i]){
+                                index = i - 1;
+                                break;
+                            }
+                        }
+
+                        temp_diff = hap[index] - diff;
+                        while(Exist(temp_diff) == 0){
+                            index--;
+                            temp_diff = hap[index] - diff;
+                        }
+
+                        Search(0, 0, temp_diff, bouns);
+                        Array_Init(bouns, false);
+                        Haparr_Zero();
+                        Search(0, 0, hap[index], base);
+                        Array_Init(base, false);
+
+                        int i = 1;
+                        data[0] = weight;
+                        for(int j = 0; j < root; j++){
+                                if(base[j] != 0){
+                                data[i] = base[j];
+                                i++;
+                            }
+                        }
+                        data[i] = 0;
+                        i++;
+                        data[i] = chu[root];
+                        i++;
+                        for(int j = 0; j < root; j++){
+                                if(bouns[j] != 0){
+                                data[i] = bouns[j];
+                                i++;
+                            }
+                        }
+                        sz = i;
                     }
                 }
             }else{// sum < weight
+                printf("sum < weight run\n");
                 int i = Exist(weight);
-                if(i != 0){
+                if(i != 999){
+                    printf("Exist O\n");
                     int arr[root];
                     Array_Init(arr, true);
                     Search(0, 0, weight, arr);
@@ -208,26 +279,66 @@ void Balance(){
                     sz = i;
                 }
                 else{
+                    printf("Exist X\n");
                     int index, temp_diff, bouns[root], base[root];
 
                     Array_Init(bouns, true);
                     Array_Init(base, true);
 
-                    for(int i = 1; i < arrsz; i++){
+                    for(int i = 0; i < arrsz; i++){
                         if(weight > hap[i]){
                             index = i - 1;
                             break;
                         }
                     }
 
+                    printf("index = %d, chu[root] = %d\n", index, chu[root]);
+                    if(index == -1){
+                        Hap_Zero();
+
+                        root = root + 1;
+                        int no = root;
+
+                        while(no != 0){
+                            arrsz += Combination(root, no);
+                            no--;
+                        }
+
+                        Kindhap(-1, 0);
+                        num--;
+                        Sort();
+
+                        Print_hap();
+
+                        for(int i = 0; i < arrsz; i++){
+                            if(weight > hap[i]){
+                                index = i - 1;
+                                break;
+                            }
+                        }
+                    }
+                    printf("hap[index] = %d\n", hap[index]);
+
                     temp_diff = weight - hap[index];
-                    while(Exist(temp_diff) == 0){
+                    if(temp_diff < 0){
+                        temp_diff = -temp_diff;
+                    }
+                    printf("temp_diff = %d\n", temp_diff);
+                    while(Exist(temp_diff) == 999){
                         index--;
                         temp_diff = weight - hap[index];
+
+                        if(temp_diff < 0){
+                            temp_diff = -temp_diff;
+                        }
                     }
+                    printf("hap[index] = %d, temp_diff = %d\n", hap[index], temp_diff);
                     Search(0, 0, temp_diff, bouns);
                     Array_Init(bouns, false);
-                    hap_arr[7] = {0,};
+                    for(int i = 0; i < root; i++){
+                        printf("bouns[%d] = %d\n", i, bouns[i]);
+                    }
+                    Haparr_Zero();
                     Search(0, 0, hap[index], base);
                     Array_Init(base, false);
 
@@ -243,7 +354,7 @@ void Balance(){
                     i++;
                     for(int j = 0; j < root; j++){
                         if(base[j] != 0){
-                            data[i] = bouns[j];
+                            data[i] = base[j];
                             i++;
                         }
                     }
@@ -256,14 +367,13 @@ void Balance(){
 
 int main()
 {
-    /*
     Input();
     Balance();
     for(int i = 0; i < sz; i++){
         printf("%d ", data[i]);
     }
-    */
 
+    /*
     root = 4;
     int no = root, arrsz = 0;
 
@@ -276,12 +386,7 @@ int main()
     num--;
     Sort();
 
-    for(int i = 0; i < arrsz; i++){
-        printf("hap[%d] = %d\n", i, hap[i]);
-    }
-
-    /*
-    int temp = Exist(chu[root-1]);
+    int temp = Exist(40);
 
     printf("temp = %d\n", temp);
     printf("hap[%d] = %d\n", temp, hap[temp]);
