@@ -4,11 +4,63 @@
 
 using namespace std;
 
-std::vector<int> data[200];
+std::vector<int> Data[200];
 int node, edge;
 bool possible = true;
 
+//Ç®ÀÌ
+int vertex;
+int data[200][200], NodeColor[200];
+
 void Input(){
+    int s, e;
+
+    freopen("input.txt", "r", stdin);
+    scanf("%d %d", &vertex, &edge);
+
+    for(int i = 0; i < edge; i++){
+        scanf("%d%d", &s, &e);
+        data[s][e] = data[e][s] = 1;
+    }
+}
+
+void ArrayPrn(int v, int c){
+    printf("\t");
+    for(int i = 0; i < vertex; i++){
+        printf("%d ", NodeColor[i]);
+    }
+    printf(", %d %d\n", v, c);
+}
+
+void ArrayPrn2(){
+    for(int i = 0; i < vertex; i++){
+        for(int j = 0; j < vertex; j++){
+            printf("%d ", data[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void Solve(int v, int color){
+    NodeColor[v] = color;
+    ArrayPrn(v, color);
+
+    for(int i = 0; i < vertex; i++){
+        if(data[v][i] && NodeColor[i] == color){
+            NodeColor[v] = 0;
+            return;
+        }
+    }
+
+    for(int i = 0; i < vertex; i++){
+        if(data[v][i] && NodeColor[i] == 0){
+            Solve(i, 1);
+            Solve(i, 2);
+        }
+    }
+}
+
+void In(){
     int x, y;
 
     freopen("input.txt", "r", stdin);
@@ -17,9 +69,10 @@ void Input(){
 
     for(int i = 0; i < edge; i++){
         scanf("%d %d", &x, &y);
-        data[x].push_back(y);
-        data[y].push_back(x);
+        Data[x].push_back(y);
+        Data[y].push_back(x);
     }
+    fclose(stdin);
 }
 
 void Color(){
@@ -30,18 +83,18 @@ void Color(){
     }
 
     for(int i = 0; i < node; i++){
-        if(data[i].size() != 0 && rb[i] == 0){
+        if(Data[i].size() != 0 && rb[i] == 0){
             rb[i] = 1;
-            for(int j = 0; j < data[i].size(); j++){
-                rb[data[i][j]] = 2;
+            for(int j = 0; j < Data[i].size(); j++){
+                rb[Data[i][j]] = 2;
             }
         }
     }
 
     //check
     for(int i = 0; i < node; i++){
-        for(int j = 0; j < data[i].size(); j++){
-            if(rb[i] == rb[data[i][j]]){
+        for(int j = 0; j < Data[i].size(); j++){
+            if(rb[i] == rb[Data[i][j]]){
                 possible = false;
                 return;
             }
@@ -52,14 +105,14 @@ void Color(){
 void Print(){
     for(int i = 0; i < node; i++){
         printf("node %d : ", i);
-        for(int j = 0; j < data[i].size(); j++){
-            printf("%d ", data[i][j]);
+        for(int j = 0; j < Data[i].size(); j++){
+            printf("%d ", Data[i][j]);
         }
         printf("\n");
     }
 }
 
-void Output(){
+void Out(){
     string context = "IMPOSSIBLE";
 
     if(possible){
@@ -68,12 +121,29 @@ void Output(){
 
     freopen("output.txt", "w", stdout);
     printf("%s", context.c_str());
+    fclose(stdout);
 }
 
 int main()
 {
-    Input();
+    /*
+    In();
     Color();
-    Output();
+    Out();
+    */
+
+    Input();
+    ArrayPrn2();
+
+    Solve(0, 1);
+    ArrayPrn(0, 0);
+    for(int i = 0; i < vertex; i++){
+        if(NodeColor[i] == 0){
+            printf("IMPOSSIBLE");
+            return 0;
+        }
+    }
+
+    printf("OK");
     return 0;
 }

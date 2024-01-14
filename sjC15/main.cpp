@@ -1,11 +1,29 @@
 #include <cstdio>
 
-int star, kind;
+int star, kind, cnt;
 
 void Input(){
     freopen("input.txt", "r", stdin);
     scanf("%d", &star);
     fclose(stdin);
+}
+
+void Solve(int v){
+    if(v > star){
+        printf("X");
+        return;
+    }
+
+    if(v == star){
+        cnt++;
+        printf(" %d\n", v);
+        return;
+    }
+
+    printf(" %d", v);
+    Solve(v + 1);
+    printf(" %d", v);
+    Solve(v + 2);
 }
 
 int Factorial(int num){
@@ -38,7 +56,9 @@ void Output(){
 int main()
 {
     Input();
-    Up();
-    Output();
+    Solve(0);
+    printf("\n%d\n", cnt);
+    //Up();
+    //Output();
     return 0;
 }

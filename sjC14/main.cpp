@@ -4,7 +4,39 @@ int big = -1000;
 int data[100];
 int num;
 
+//Ç®ÀÌ
+int n;
+
 void Input(){
+    freopen("input.txt", "r", stdin);
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++){
+        scanf("%d", data+i);
+    }
+    fclose(stdin);
+}
+
+void Solve(){
+    int s, e, k, sum, maxSum = -1000;
+
+    for(s = 0; s < n; s++){
+        for(e = s; e < n; e++){
+            sum = 0;
+            for(k = s; k <= e; k++){
+                sum += data[k];
+            }
+
+            if(maxSum < sum){
+                maxSum = sum;
+            }
+
+            printf("[%d] - [%d] ÇÕ = %3d, %3d\n", s, e, sum, maxSum);
+        }
+    }
+    printf("%d\n", maxSum);
+}
+
+void In(){
     freopen("input.txt", "r", stdin);
     scanf("%d", &num);
     for(int i = 0; i < num; i++){
@@ -39,7 +71,7 @@ void Maximum(){
     }
 }
 
-void Output(){
+void Out(){
     freopen("output.txt", "w", stdout);
     printf("%d", big);
     fclose(stdout);
@@ -47,8 +79,12 @@ void Output(){
 
 int main()
 {
-    Input();
+    /*
+    In();
     Maximum();
-    Output();
+    Out();
+    */
+    Input();
+    Solve();
     return 0;
 }
