@@ -1,14 +1,60 @@
 #include <cstdio>
-#include <string>
+#include <cstdlib>
 
 int weight, root, sz, num = 0;
 int chu[7] = {1, 3, 9, 27, 81, 243, 729};
-int hap[126], data[9], hap_arr[7];
+int hap[126], data[10], hap_arr[7];
+
+//Ç®ÀÌ
+int n, scale[7] = {1, 3, 9, 27, 81, 243, 729}, chk[7], end;
+
 
 void Input(){
     freopen("input.txt", "r", stdin);
     scanf("%d", &weight);
     fclose(stdin);
+}
+
+void Output(){
+    freopen("output.txt", "w", stdout);
+    for(int i = 0; i < sz; i++){
+        printf("%d ", data[i]);
+    }
+    fclose(stdout);
+}
+
+void Solve(int n, int sum){
+    if(end)
+        return;
+
+    if(sum == n){
+        data[sz] = weight;
+        sz++;
+        for(int c = 2; c > 0; c--){
+            for(int i = 0; i < 7; i++){
+                if(chk[i] == c){
+                    data[sz] = scale[i];
+                    sz++;
+                }
+            }
+            if(c == 2){
+                data[sz] = 0;
+                sz++;
+            }
+
+        }
+        end = 1;
+    }
+
+    for(int i = 0; i < 7; i++){
+        if(chk[i] == 0){
+            chk[i] = 1;
+            Solve(n, sum+scale[i]);
+            chk[i] = 2;
+            Solve(n+scale[i], sum);
+            chk[i] = 0;
+        }
+    }
 }
 
 int Combination(int many, int num){
@@ -95,15 +141,16 @@ void Search(int i, int sum, int find_num, int arr[]){
     Search(i+1, sum, find_num, arr);
     arr[i] = chu[i];
     Search(i+1, sum + chu[i], find_num, arr);
+    arr[i] = 0;
 }
 
 void Array_Init(int* arr, bool zero){
     if(zero){
-        for(int i = 0; i < root; i++){
+        for(int i = 0; i < root+1; i++){
             arr[i] = 0;
         }
     }else{
-        for(int i = 0; i < root; i++){
+        for(int i = 0; i < root+1; i++){
             arr[i] = hap_arr[i];
         }
     }
@@ -280,7 +327,7 @@ void Balance(){
                 }
                 else{
                     printf("Exist X\n");
-                    int index, temp_diff, bouns[root], base[root];
+                    int index, temp_diff, bouns[root+1], base[root+1];
 
                     Array_Init(bouns, true);
                     Array_Init(base, true);
@@ -332,12 +379,9 @@ void Balance(){
                             temp_diff = -temp_diff;
                         }
                     }
-                    printf("hap[index] = %d, temp_diff = %d\n", hap[index], temp_diff);
+
                     Search(0, 0, temp_diff, bouns);
                     Array_Init(bouns, false);
-                    for(int i = 0; i < root; i++){
-                        printf("bouns[%d] = %d\n", i, bouns[i]);
-                    }
                     Haparr_Zero();
                     Search(0, 0, hap[index], base);
                     Array_Init(base, false);
@@ -368,48 +412,8 @@ void Balance(){
 int main()
 {
     Input();
-    Balance();
-    for(int i = 0; i < sz; i++){
-        printf("%d ", data[i]);
-    }
-
-    /*
-    root = 4;
-    int no = root, arrsz = 0;
-
-    while(no != 0){
-        arrsz += Combination(root, no);
-        no--;
-    }
-
-    Kindhap(-1, 0);
-    num--;
-    Sort();
-
-    int temp = Exist(40);
-
-    printf("temp = %d\n", temp);
-    printf("hap[%d] = %d\n", temp, hap[temp]);
-
-    int arr[root];
-    for(int i = 0; i < root; i++){
-        arr[i] = 0;
-    }
-
-    Search(0, 0, 36, arr);
-
-    int x = 0, like[4] = {};
-    for(int i = 0; i < root; i++){
-        if(hap_arr[i] != 0){
-            like[x] = hap_arr[i];
-            x++;
-        }
-    }
-
-    for(int j= 0; j < x; j++){
-        printf("like[%d] = %d\n", j, like[j]);
-    }
-    */
+    Solve(weight, 0);
+    Output();
 
     return 0;
 }
