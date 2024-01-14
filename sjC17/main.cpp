@@ -3,7 +3,33 @@
 int cost, kind, eff = 0;
 int data[21];
 
+//solve
+int B, n, act[23], res;
+
 void Input(){
+    freopen("input.txt", "r", stdin);
+    scanf("%d %d", &B, &n);
+    for(int i = 1; i < n; i++){
+        scanf("%d", &act[i]);
+    }
+}
+
+void Solve(int i, int sum){
+    if(sum > B){
+        return;
+    }
+    printf("%d, %d, %d\n", i, sum, res);
+    if(i == n + 1){
+        if(sum <= B && sum > res){
+            res = sum;
+        }
+        return;
+    }
+    Solve(i + 1, sum + act[i]);
+    Solve(i + 1, sum);
+}
+
+void In(){
     freopen("input.txt", "r", stdin);
     scanf("%d", &cost);
     scanf("%d", &kind);
@@ -30,7 +56,7 @@ void Buget(int i, int sum){
     Buget(i+1, sum);
 }
 
-void Output(){
+void Out(){
     freopen("output.txt", "w", stdout);
     printf("%d", eff);
     fclose(stdout);
@@ -38,8 +64,13 @@ void Output(){
 
 int main()
 {
-    Input();
+    /*
+    In();
     Buget(0, 0);
-    Output();
+    Out();
+    */
+    Input();
+    Solve(1, 0);
+    printf("%d", res);
     return 0;
 }
