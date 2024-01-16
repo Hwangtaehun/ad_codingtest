@@ -304,10 +304,10 @@ void Balance(){
                     }
                 }
             }else{// sum < weight
-                printf("sum < weight run\n");
+                //printf("sum < weight run\n");
                 int i = Exist(weight);
                 if(i != 999){
-                    printf("Exist O\n");
+                    //printf("Exist O\n");
                     int arr[root];
                     Array_Init(arr, true);
                     Search(0, 0, weight, arr);
@@ -326,7 +326,7 @@ void Balance(){
                     sz = i;
                 }
                 else{
-                    printf("Exist X\n");
+                    //printf("Exist X\n");
                     int index, temp_diff, bouns[root+1], base[root+1];
 
                     Array_Init(bouns, true);
@@ -339,7 +339,7 @@ void Balance(){
                         }
                     }
 
-                    printf("index = %d, chu[root] = %d\n", index, chu[root]);
+                    //printf("index = %d, chu[root] = %d\n", index, chu[root]);
                     if(index == -1){
                         Hap_Zero();
 
@@ -364,13 +364,13 @@ void Balance(){
                             }
                         }
                     }
-                    printf("hap[index] = %d\n", hap[index]);
+                    //printf("hap[index] = %d\n", hap[index]);
 
                     temp_diff = weight - hap[index];
                     if(temp_diff < 0){
                         temp_diff = -temp_diff;
                     }
-                    printf("temp_diff = %d\n", temp_diff);
+                    //printf("temp_diff = %d\n", temp_diff);
                     while(Exist(temp_diff) == 999){
                         index--;
                         temp_diff = weight - hap[index];
@@ -412,7 +412,8 @@ void Balance(){
 int main()
 {
     Input();
-    Solve(weight, 0);
+    Balance();
+    //Solve(weight, 0);
     Output();
 
     return 0;
