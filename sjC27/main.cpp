@@ -1,107 +1,59 @@
 #include <cstdio>
 
-int data[20][3], area, endSw, kind;
+int n, cases;
+int p[500], d[500], g[500];
 
-void In(){
+void Input(){
     freopen("input.txt", "r", stdin);
-    scanf("%d", &area);
-    for(int i = 0; i < area; i++){
-        scanf("%d %d %d", &data[i][0], &data[i][1], &data[i][2]);
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++){
+        scanf("%d %d %d", &p[i], &d[i], &g[i]);
     }
+    fclose(stdin);
 }
 
-void Print(){
-    for(int i = 0; i < area; i++){
-        printf("%d %d %d\n", data[i][0], data[i][1], data[i][2]);
-    }
+bool isGo(int a, int k){
+    return p[k] <= p[a] + d[a];
 }
 
-void boolPrint(bool a[]){
-    for(int i = 0; i < area; i++){
-        printf("chk[%d] = %d\n", i, a[i]);
-    }
-    printf("\n");
+bool isBack(int b, int k){
+    return (p[k] <= p[b] + d[k]) && g[k];
 }
 
-void Move(int index, int weight, int cnt, bool chk[]){
-    int minimum, maxium;
-    bool whole = true;
-    minimum = data[index][0] - data[index][1];
-    maxium = data[index][0] + data[index][1];
-    chk[index] = true;
-    chk[0] = false;
+int Solve(int a, int b, int k){
+    int c = 0;
 
-    boolPrint(chk);
-
-    if(minimum < 0){
-        if(index == 0){
-            minimum = 1;
+    if(k == n-1){
+        if(isGo(a, k) && isBack(b, k)){
+            c = 1;
         }else{
-            minimum = 0;
+            c = 0;
         }
-    }
-
-    if(maxium > 15){
-        maxium = 15;
-    }
-
-    if(endSw){
-        return;
-    }
-
-    if(cnt > area*2){
-        printf("cnt > area\n");
-        endSw = 1;
-        return;
-    }
-
-    if(index == 0){
-        if(chk[area-1]){
-            kind++;
-            printf("kind = %d\n", kind);
-            return;
+    }else{
+        if(isGo(a,k)){
+            c += Solve(k, b, k + 1);
         }
-    }
 
-    if(index == area - 1){
-        weight = 1;
-    }
-
-    for(int i = 1; i < area; i++){
-        if(!chk[i]){
-            whole = false;
-            break;
+        if(isBack(b,k)){
+            c += Solve(a, k, k + 1);
         }
+
+        c += Solve(a, b, k + 1);
     }
 
-    if(whole){
-        return;
-    }
-
-    for(int i = 0; i < area; i++){
-        if(minimum <= data[i][0] && data[i][0] <= maxium && weight <= data[i][2] && !chk[i]){
-            Move(i, weight, cnt+1, chk);
-        }
-    }
+    return c;
 }
 
+void Output(){
+    int in = cases % 1000;
+    freopen("output.txt", "w", stdout);
+    printf("%d", in);
+    fclose(stdout);
+}
 
-int main()
-{
-    In();
-    //Print();
-    bool chk[area];
-    for(int i = 0; i < area; i++){
-        chk[i] = false;
-    }
-    Move(1, 0, 0, chk);
-    /*
-    for(int i = 1; i < area; i++){
-        if(0 < data[i][0] || data[i][0] < 8){
-            printf("i = %d\n", i);
-            Move(i, 0, 0, chk);
-        }
-    }
-    */
+int main(){
+    Input();
+    cases = Solve(0, 0, 1);
+    Output();
     return 0;
 }
