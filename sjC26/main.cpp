@@ -3,6 +3,42 @@
 char angle[20], devil[20], word[10];
 int word_size, bridge_size, endSw, kind = 0;
 
+//solve
+char scroll[11], bridge[2][21];
+int result = 0;
+
+void Input(){
+    freopen("input.txt", "r", stdin);
+    scanf("%s %s %s", scroll, bridge[0], bridge[1]);
+    fclose(stdin);
+}
+
+int Solve(int row, int n, int rp){
+    int i, c = 0, next;
+
+    if(scroll[rp] == '\0'){
+        return 1;
+    }
+
+    for(i = n; bridge[row][i] != '\0'; i++){
+        if(bridge[row][i] == scroll[rp]){
+            printf("%d,%c ", i, scroll[rp]);
+            next = (row == 0) ? 1 : 0;
+            c += Solve(next, i + 1, rp + 1);
+            if(c > 0){
+                printf("aaa\n");
+            }
+        }
+    }
+    return c;
+}
+
+void Output(){
+    freopen("output.txt", "w", stdout);
+    printf("%d", result);
+    fclose(stdout);
+}
+
 void In(){
     freopen("input.txt", "r", stdin);
     scanf("%s", word);
@@ -12,14 +48,14 @@ void In(){
 
     int i = 0;
     for(i = 0; i < 20;  i++){
-        if(angle[i] == NULL){
+        if(angle[i] == '\0'){
             break;
         }
     }
     bridge_size = i;
 
     for(i = 0; i < 10;  i++){
-        if(word[i] == NULL){
+        if(word[i] == '\0'){
             break;
         }
     }
@@ -89,10 +125,14 @@ void Out(){
 
 int main()
 {
-    In();
-    Route(0,0,1);
-    endSw = 0;
-    Route(0,0,-1);
-    Out();
+    //In();
+    //Route(0,0,1);
+    //endSw = 0;
+    //Route(0,0,-1);
+    //Out();
+    Input();
+    result += Solve(0,0,0);
+    result += Solve(1,0,0);
+    Output();
     return 0;
 }

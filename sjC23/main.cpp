@@ -18,13 +18,6 @@ void Distance(){
     }
 }
 
-int dis(int a, int b){
-    int d;
-    d = abs(data[a][0] - data[b][0]) + abs(data[a][1] - data[b][1]);
-
-    return d;
-}
-
 void Input(){
     freopen("input.txt", "r", stdin);
 
@@ -38,7 +31,41 @@ void Input(){
 
 void Solve(int a, int b, int d){
     int next = (a > b? a : b) + 1;
+    printf("%d %d %d %3d %3d\n", a, b, next, d, di[a][next]);
 
+    if(next >= m + 2){
+        if(d < ans){
+            ans = d;
+        }
+        return;
+    }
+
+    Solve(next, b, d + di[a][next]);
+    Solve(a, next, d + di[b][next]);
+}
+
+void ArrayPrn(){
+    for(int a = 0; a < m + 2; a++){
+        for(int b = 0; b < 2; b++){
+            printf("%3d", data[a][b]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+    for(int a = 0; a < m + 2; a++){
+        for(int b = 0; b < m + 2; b++){
+            printf("%3d", di[a][b]);
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+int dis(int a, int b){
+    int d;
+    d = abs(data[a][0] - data[b][0]) + abs(data[a][1] - data[b][1]);
+
+    return d;
 }
 
 void In(){
@@ -67,10 +94,21 @@ void Drive(int car1, int car2, int d){
     Drive(car1, next, d+dis(car2, next));
 }
 
+void Output(){
+    freopen("output.txt", "w", stdout);
+    printf("%d", ans);
+    fclose(stdout);
+}
+
 int main()
 {
-    In();
-    Drive(0,1,0);
-    printf("%d", distance);
+    //In();
+    //Drive(0,1,0);
+    //printf("%d", distance);
+    Input();
+    Distance();
+    ArrayPrn();
+    Solve(0,1,0);
+    Output();
     return 0;
 }
