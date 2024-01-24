@@ -25,7 +25,15 @@ void Input(){
     }
 }
 
+void Output(){
+    freopen("output.txt", "w", stdout);
+    printf("%d", all[number-1]);
+    fclose(stdout);
+}
+
 int main()
 {
+    Input();
+    Output();
     return 0;
 }
