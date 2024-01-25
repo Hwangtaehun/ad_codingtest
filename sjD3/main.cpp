@@ -1,91 +1,106 @@
 #include <cstdio>
+#include <algorithm>
 
-char data[6];
-int sz, nsz, num_data[720];
+using namespace std;
 
-void Print(){
-    for(int i = 0; i < sz; i++){
-        printf("%c ", data[i]);
+int len, num[6], data[1000], dCnt;
+
+void ArrayPrn(){
+    for(int i = 0; i < 6; i++){
+        printf("%d ", num[i]);
     }
     printf("\n");
 }
 
-bool Sosu(int num){
-    for(int i = 2; i < num; i++){
-        if(num % i == 0){
+void ArrayPrn2(){
+    for(int i = 0; i < dCnt; i++){
+        printf("%d ", data[i]);
+    }
+    printf("\n");
+}
+
+bool IsPrime(int k){
+    for(int i = 2; i*i <=k; i++){
+        if(k % i == 0){
             return false;
         }
     }
     return true;
 }
 
-int Factorial(int num){
-    if(num == 1){
-        return 1;
+void Swap(int *a, int *b){
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int SplitNumber(int n){
+    int i = 0;
+
+    while(n != 0){
+        num[i] = n % 10;
+        n /= 10;
+        i++;
     }
-    return num * Factorial(num-1);
+
+    return i;
+}
+
+void Permutation(int n, int len){
+    int i, k = 0, weight = 1;
+
+    if(n == 0){
+        for(i = 0; i <= len; i++){
+            k += num[i] * weight;
+            weight *= 10;
+        }
+        ArrayPrn();
+        data[dCnt++] = k;
+        return;
+    }
+    for(i = n - 1; i >= 0; i--){
+        Swap(&num[i], &num[n-1]);
+        printf("i=%d, %d\n", i, n-1);
+        Permutation(n-1, len);
+        Swap(&num[i], &num[n-1]);
+    }
 }
 
 void Input(){
+    int n;
+
     freopen("input.txt", "r", stdin);
-    scanf("%s", data);
+    scanf("%d", &n);
     fclose(stdin);
 
-    for(int i = 0; i < 6; i++){
-        if(data[i] == '\0'){
-            sz = i;
-            break;
-        }
-    }
-
-    for(int i = 0; i < sz - 1; i++){
-        for(int j = i; j < sz; j++){
-            if(data[j] < data[i]){
-                char temp = data[i];
-                data[i] = data[j];
-                data[j] = temp;
-            }
-        }
-    }
+    len = SplitNumber(n);
 }
 
-void Kind(){
-    int du1 = 1, du2 = 1, du3 = 1, j = 0, temp;
+void Output(){
+    int prev = -1;
 
-    for(int i = j + 1; i < sz; i++){
-        if(data[j] == data[i]){
-            du1++;
-            temp = i;
+    freopen("output.txt", "w", stdout);
+    for(int i = 0; i < dCnt; i++){
+        if(IsPrime(data[i]) && prev != data[i]){
+            printf("%d ", data[i]);
+            prev = data[i];
         }
     }
 
-    j = temp + 1;
-
-    for(int i = j + 1; i < sz; i++){
-        if(data[j] == data[i]){
-            du2++;
-            temp = i;
-        }
+    if(prev == -1){
+        printf("0");
     }
 
-    j = temp + 1;
-
-    for(int i = j + 1; i < sz; i++){
-        if(data[j] == data[i]){
-            du3++;
-            temp = i;
-        }
-    }
-
-    nsz = Factorial(sz) / Factorial(du1) / Factorial(du2) / Factorial(du3);
+    fclose(stdout);
 }
 
-void Combination(int n, int len){
-}
-
-int main()
-{
+int main(){
     Input();
-    Kind();
+    Permutation(len, len);
+    ArrayPrn2();
+    std::sort(data, data+dCnt);
+    ArrayPrn2();
+    Output();
     return 0;
 }
