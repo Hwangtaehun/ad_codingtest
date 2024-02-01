@@ -1,6 +1,6 @@
 #include <cstdio>
 
-int data[2][100000], sz, rest, kind, endsw;
+int sz, rest, kind;
 
 void In(){
     freopen("input.txt", "r", stdin);
@@ -8,45 +8,30 @@ void In(){
     fclose(stdin);
 }
 
-void Fill(int start){
-    if(endsw){
-        return;
+int Fill(int num){
+    if(num > 2){
+        return Fill(num-1) + 2 * Fill(num-2);
+    }
+    else if(num == 2){
+        return 3;
+    }
+    else if(num == 1){
+        return 1;
     }
 
-    if(start == sz){
-        kind++;
-        endsw = 1;
-        return;
-    }
-    else if(start == sz - 1){
-        data[start][0] = data[start][1] = 1;
-        Fill(start + 1);
-    }
-    else if(start > sz){
-        endsw = 1;
-        return;
-    }
+    return 0;
+}
 
-    data[start][0] = data[start][1] = 1;
-    Fill(start + 1);
-    data[start][0] = data[start][1] = 0;
-
-    data[start][0] = data[start][1] = 2;
-    data[start + 1][0] = data[start + 1][1] = 2;
-    Fill(start + 2);
-    data[start][0] = data[start][1] = 0;
-    data[start + 1][0] = data[start + 1][1] = 0;
-
-    data[start][0] = data[start][1] = 3;
-    data[start + 1][0] = data[start + 1][1] = 3;
-    Fill(start + 2);
+void Out(){
+    freopen("output.txt", "w", stdout);
+    printf("%d", kind % rest);
+    fclose(stdout);
 }
 
 int main()
 {
     In();
-    printf("%d %d", sz, rest);
-    Fill(0);
-    printf("kind = %d\n", kind);
+    kind = Fill(sz);
+    Out();
     return 0;
 }
