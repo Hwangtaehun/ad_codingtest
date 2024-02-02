@@ -2,6 +2,20 @@
 
 int s, e, d;
 
+int Solve(int a, int b){
+    if(a == b){
+        return 0;
+    }
+
+    if(b > a){
+        return Solve(a, b/2) + 1;
+    }
+
+    if(a > b){
+        return Solve(a/2, b) + 1;
+    }
+}
+
 void In(){
     freopen("input.txt", "r", stdin);
     scanf("%d %d", &s, &e);
@@ -59,8 +73,11 @@ void Out(){
 
 int main()
 {
-    In();
-    Find();
-    Out();
+    int a, b;
+    scanf("%d %d", &a, &b);
+    printf("%d\n", Solve(a, b));
+    //In();
+    //Find();
+    //Out();
     return 0;
 }

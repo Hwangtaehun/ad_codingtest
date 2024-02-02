@@ -1,7 +1,30 @@
 #include <cstdio>
+#include <ctime>
 
 char data[6], result[6];
 int re_size;
+bool bFirst = false;
+
+void Solve1(int n){
+    if(n == 0){
+        return;
+    }
+    printf("%d", n%10);
+    Solve1(n/10);
+}
+
+void Solve2(int n){
+    if(n == 0){
+        return;
+    }
+
+    if(bFirst || (n % 10) != 0){
+        printf("%d", n%10);
+        bFirst = true;
+    }
+
+    Solve2(n/10);
+}
 
 void In(){
     freopen("input.txt", "r", stdin);
@@ -53,8 +76,13 @@ void Out(){
 
 int main()
 {
-    In();
+    int n;
+    scanf("%d", &n);
+    Solve1(n);
+    printf("\n");
+    Solve2(n);
+    /*In();
     Reverse();
-    Out();
+    Out();*/
     return 0;
 }
