@@ -2,6 +2,29 @@
 
 int data[30], result[30], cnt, number, re_sz;
 
+//solve
+int a[30];
+
+void Solve(int n, int k){
+    int min;
+
+    if(n == 0){
+        for(int i = 0; i < cnt; i++){
+            printf("%d ", a[i]);
+        }
+        printf("\n");
+        return;
+    }
+
+    min = n < k ? n : k;
+
+    for(int i = min; i >= 1; i--){
+        a[cnt++] = i;
+        Solve(n-i, i);
+        cnt--;
+    }
+}
+
 void In(){
     freopen("input.txt", "r", stdin);
     scanf("%d", &number);
@@ -59,8 +82,13 @@ void Out(){
 
 int main()
 {
+    int n;
+    scanf("%d", &n);
+    Solve(n, n);
+    /*
     In();
     Partition(number, number);
     Out();
+    */
     return 0;
 }
