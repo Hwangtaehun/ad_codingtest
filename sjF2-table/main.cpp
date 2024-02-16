@@ -1,6 +1,6 @@
 #include <cstdio>
 
-int n, r, result;
+int n, r, result, temp[31];
 
 void In(){
     freopen("input.txt", "r", stdin);
@@ -13,7 +13,11 @@ int Factorial(int num){
         return 1;
     }
 
-    return num * Factorial(num - 1);
+    if(!temp[num]){
+        temp[num] = num * Factorial(num - 1);
+    }
+
+    return temp[num];
 }
 
 void Out(){

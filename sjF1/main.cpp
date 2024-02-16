@@ -1,7 +1,11 @@
 #include <cstdio>
+#include <math.h>
 
 char data[5], result[5];
 int sz = 5;
+
+//solve
+int DT[50001];
 
 void In(){
     freopen("input.txt", "r", stdin);
@@ -37,10 +41,27 @@ void Out(){
     fclose(stdout);
 }
 
+void f1(int n){
+    int i;
+
+    for(i = 1; i <= n; i++){
+        if(i < 10){
+            DT[i] = i;
+        }
+        else{
+            DT[i] = DT[i/10] + DT[i%10]*(int)pow(10, (int)log10(i));
+        }
+    }
+}
+
 int main()
 {
-    In();
+    /*In();
     Reverse();
-    Out();
+    Out();*/
+    int n;
+    scanf("%d", &n);
+    f1(n);
+    printf("%d\n", DT[n]);
     return 0;
 }
