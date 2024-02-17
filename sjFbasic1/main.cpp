@@ -15,6 +15,23 @@ int f(int n){
     return DT[n];
 }
 
+int fib(int num){
+    int n1, n2, n3, tot, cnt = 2;
+    n1 = n2 = 1;
+    tot = 2;
+    n3 = 0;
+
+    while(cnt != num){
+        n3 = n1 + n2;
+        tot = n3;
+        n1 = n2;
+        n2 = n3;
+        cnt++;
+    }
+
+    return tot;
+}
+
 int fibonacci(int num){
     if(num == 0){
         return 0;
@@ -32,10 +49,13 @@ int main()
     int num, start;
     scanf("%d", &num);
     start = clock();
-    printf("%d\n", f(num));
+    printf("%d\n", fibonacci(num));
     printf("clock()\t = %d\n", clock()-start);
     start = clock();
-    printf("%d\n", fibonacci(num));
+    printf("%d\n", fib(num));
+    printf("clock()\t = %d\n", clock()-start);
+    start = clock();
+    printf("%d\n", f(num));
     printf("clock()\t = %d\n", clock()-start);
     return 0;
 }

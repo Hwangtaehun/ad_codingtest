@@ -1,6 +1,37 @@
 #include <cstdio>
+#define MAX(a,b) ((a) >= (b) ? (a) : (b))
 
 int row, col, data[200][200], maxinum = 0;
+
+//solve
+int n, m, mine[220][220], table[220][220];
+
+void Input(){
+    freopen("input.txt", "r", stdin);
+    scanf("%d %d", &n, &m);
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= m; j++){
+            scanf("%d ", &mine[i][j]);
+        }
+    }
+    fclose(stdin);
+}
+
+int Back(int row, int col){
+    if(table[row][col]){
+        return table[row][col];
+    }
+
+    if(row == n && col == m){
+        return mine[row][col];
+    }
+
+    if(row > n || col > m){
+        return 0;
+    }
+
+    return table[row][col] = mine[row][col] + MAX(Back(row + 1, col), Back(row, col + 1));
+}
 
 void In(){
     freopen("input.txt", "r", stdin);
@@ -52,8 +83,12 @@ void Out(){
 
 int main()
 {
+    /*
     In();
     Dig(0, 0, 0);
     Out();
+    */
+    Input();
+    printf("%d", Back(1, 1));
     return 0;
 }
