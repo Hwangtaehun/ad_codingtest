@@ -32,7 +32,7 @@ void cost_min(){
         DT[0][j] = abs(j-a)*y;
     }
 
-    for(i = 0; i <= m; i++){
+    for(i = 1; i <= m; i++){
         for(j = 1; j <= n; j++){
             for(k = 1; k <= n; k++){
                 if(j == k && (p[i] == k || p[i] + 1 == k)){
@@ -48,12 +48,9 @@ void cost_min(){
 }
 
 void Out(){
-    for(int i = 1; i <= n; i++){
-        for(int j = 1; j <= n; j++){
-            printf("%d->%d = %d\n", i, j, DT[i][j]);
-        }
-        printf("\n");
-    }
+    freopen("output.txt", "w", stdout);
+    printf("%d", DT[m][b]);
+    fclose(stdout);
 }
 
 int main(){
