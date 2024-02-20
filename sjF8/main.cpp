@@ -5,7 +5,8 @@
 using namespace std;
 
 int kind;
-string data[20][2], str;
+string data[20][2], str, result;
+char data_s[20];
 
 void In(){
     freopen("input.txt", "r", stdin);
@@ -17,20 +18,54 @@ void In(){
     fclose(stdin);
 }
 
-void Incoding(){
-    int cnt = 0;
-    int max_lenght = (kind) / 2 + 1;
+int Word(int cnt){
+    for(int i = 0; i < kind; i++){
+        if(data_s[i] ==  str.at(cnt)){
+            string word, huff = data[i][1];
+            int length = huff.size();
 
-    for(int i = 0; i < max_lenght; i++){
-        if(str.at(i) == '0'){
-            break;
+            for(int j = cnt; j < cnt + length; j++){
+                string temp = string(1, str.at(j));
+                word.append(temp);
+            }
+
+            if(huff == word){
+                result.append(data[i][0]);
+                return  cnt + length;
+            }
         }
     }
+
+    return 0;
+}
+
+void Incoding(){
+    int cnt = 0, length = str.length();
+
+    for(int i = 0; i < kind; i++){
+        data_s[i] = data[i][1].at(0);
+    }
+
+    while(cnt != length){
+        cnt = Word(cnt);
+
+        if(cnt == 0){
+            cout << "오류 발생했습니다.\n";
+            return;
+        }
+    }
+}
+
+void Out(){
+    freopen("output.txt", "w", stdout);
+    cout << result;
+    fclose(stdout);
 }
 
 int main()
 {
     In();
-
+    Incoding();
+    Out();
     return 0;
 }
