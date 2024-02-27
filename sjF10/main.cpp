@@ -1,9 +1,41 @@
 #include <cstdio>
+#define INF 987654321
 
 int array_size, data[100000], memory[100000], maximum = 0;
 
+//solve
+int S[100000], DT[100000], n, ans = -INF;
+
+void Input(){
+    freopen("input.txt", "r", stdin);
+    scanf("%d", &n);
+    for(int i = 0; i < n; i++){
+        scanf("%d", S+i);
+    }
+    fclose(stdin);
+}
+
 int Max(int a, int b){
     return a < b ? b : a;
+}
+
+int f1(int k){
+    if(k == 0){
+        return S[0];
+    }else{
+        return Max(f1(k-1) + S[k], S[k]);
+    }
+}
+
+int f2(int k){
+    if(k == 0){
+        return DT[k] = S[0];
+    }
+    else if(!DT[k]){
+        DT[k] = Max(f2(k - 1) + S[k], S[k]);
+    }
+
+    return DT[k];
 }
 
 void In(){
@@ -58,6 +90,7 @@ void Out(){
 
 int main()
 {
+    /*
     int cnt = 0;
 
     In();
@@ -66,6 +99,22 @@ int main()
         cnt++;
     }
     Out();
+    */
+    Input();
+
+    for(int i = 0; i < n; i++){
+        ans = Max(ans, f1(i));
+    }
+
+    printf("%d\n", ans);
+
+    ans = -INF;
+
+    for(int i = 0; i < n; i++){
+        ans = Max(ans, f2(i));
+    }
+
+    printf("%d\n", ans);
 
     return 0;
 }

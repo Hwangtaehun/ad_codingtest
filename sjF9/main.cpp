@@ -1,8 +1,44 @@
 #include <cstdio>
+#include <memory.h>
 #define MOK 1000000003
 
 int data[1001][2], visited[1001], color, choose, result = 0;
 bool possible[1001];
+
+//solve
+int n, k, DT[1001][1001], DT2[1001][1001][2];
+
+void Input(){
+    freopen("input.txt", "r", stdin);
+    scanf("%d %d", &n, &k);
+    fclose(stdin);
+}
+
+int f1(int n, int k){
+    if(k > n/2){
+        DT[n][k] = 0;
+    }
+    else if(k == 1){
+        DT[n][k] = n;
+    }
+    else{
+        if(!DT[n][k]){
+            DT[n][k] = (f1(n-2, k-1) + f1(n-1, k))%MOK;
+        }
+    }
+
+    return DT[n][k];
+}
+
+int f2(int a, int b, bool can){
+    if(a >= n || b == k){
+        return (int)((b == k) && (a <= n || can));
+    }else if(DT2[a][b][can] == -1){
+        DT2[a][b][can] = (f2(a + 1, b, can) + f2(a + 2, b + 1, can)) % MOK;
+    }
+
+    return DT2[a][b][can];
+}
 
 void In(){
     freopen("input.txt", "r", stdin);
@@ -91,6 +127,7 @@ void Out(){
 
 int main()
 {
+    /*
     In();
 
     if(color / 2 < choose){
@@ -107,6 +144,12 @@ int main()
     result = result % MOK;
 
     Out();
+    */
+
+    Input();
+    memset(DT2, -1, sizeof(DT2));
+    printf("%d\n", f1(n, k));
+    printf("%d\n", (f2(1,0,true) + f2(2,1,false))%MOK);
 
     return 0;
 }
