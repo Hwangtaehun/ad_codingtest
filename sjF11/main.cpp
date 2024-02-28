@@ -2,10 +2,26 @@
 
 int row, mok, result, memory[100001];
 
-void In(){
+//solve
+int m, n, DT[100001];
+
+void Input(){
     freopen("input.txt", "r", stdin);
-    scanf("%d\n%d", &row, &mok);
+    scanf("%d %d", &m, &n);
     fclose(stdin);
+}
+
+int f1(int m){
+    if(m == 1){
+        return DT[m] = 1 % n;
+    }else if(m == 2){
+        return DT[m] = 3 % n;
+    }else{
+        if(DT[m] == 0){
+            DT[m] = (f1(m - 1) + 2 * f1(m - 2)) % n;
+        }
+        return DT[m];
+    }
 }
 
 void Fill(int num){
@@ -29,11 +45,7 @@ void Out(){
 
 int main()
 {
-    In();
-    for(int i = 1; i <= row; i++){
-        Fill(i);
-    }
-    result = memory[row] % mok;
-    Out();
+    Input();
+    printf("%d\n", f1(m));
     return 0;
 }
