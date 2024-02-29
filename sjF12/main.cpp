@@ -12,10 +12,18 @@ int Min(int a, int b){
 void Input(){
     freopen("input.txt", "r", stdin);
     scanf("%d\n%d", &m, &n);
-    for(int i = 0; i < cnt; i++){
+    for(int i = 0; i < n; i++){
         scanf("%d", coin + i);
     }
     fclose(stdin);
+}
+
+void Print(){
+    printf("m = %d, n = %d\n", m, n);
+    for(int i = 0; i < n; i++){
+        printf("%d ", coin[i]);
+    }
+    printf("\n");
 }
 
 int f1(int c){
@@ -28,10 +36,11 @@ int f1(int c){
 
         for(int i = 0; i < n; i++){
             if(c + coin[i] <= m){
-                DT[c] = Min(DT[c], f1(c+coin[i]) + 1);
+                DT[c] = Min(DT[c], f1(c + coin[i]) + 1);
             }
         }
     }
+
     return DT[c];
 }
 
@@ -52,14 +61,24 @@ void f2(){
         }
     }
 }
-//상향식 동적부터 시작
-void f3(int c){
+
+int f3(int c){
     for(int i = 0; i < n; i++){
-        if(coin[i] ==  c){
+        if(coin[i] == c){
             return 1;
         }
+    }
 
-        if()
+    if(DT[c] == 0){
+        DT[c] = 987654321;
+
+        for(int i = 0; i < n; i++){
+            if(c - coin[i] > 0){
+                DT[c] = Min(DT[c], f3(c - coin[i]) + 1);
+            }
+        }
+
+        return DT[c];
     }
 }
 
@@ -102,8 +121,11 @@ void Out(){
 
 int main()
 {
-    In();
-    Rest();
-    Out();
+    Input();
+    Print();
+    printf("%d\n", f1(0));
+    f2();
+    printf("%d\n", DT[m]);
+    printf("%d\n", f3(0));
     return 0;
 }
